@@ -26,6 +26,7 @@ it('should return the correct payload to dump', function () {
     expect($payload)
         ->id->toBeUuid()
         ->type->toBe('dump')
+         ->request_id->toBeUniqId()
         ->code_snippet->toBeArray()
         ->and($payload['ide_handle']['real_path'])
         ->toBe('Test')
@@ -135,7 +136,7 @@ it('code snippet work properly - second Code Snippet file contents', function ()
         ->toHaveKeys(['file', 'line', 'snippet'])
         ->and($context[1])
         ->file->toContain(adjustPathToDirectorySeparator('tests/Feature/PayloadTest.php'))
-        ->line->toBe(132)
+        ->line->toBe(133)
         ->and($context[1])
         ->snippet->toHaveCount(15);
 });

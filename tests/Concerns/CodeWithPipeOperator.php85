@@ -1,0 +1,14 @@
+<?php
+/**
+ * ❗ IMPORTANT ❗
+ * ---------------
+ *
+ * This file isolates native PHP 8.5 features behind a custom extension. 
+ * This ensures that automated workflows, such as Laravel Pint and Pest,
+ * running on lower versions do not parse incompatible code syntax,
+ * resulting in a crash.
+ */
+
+$name = 'laradumps'
+|> strtoupper(...)
+|> ds(...);
