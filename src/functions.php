@@ -1,6 +1,7 @@
 <?php
 
 use LaraDumps\LaraDumps\LaraDumps as LaravelLaraDumps;
+use LaraDumps\LaraDumpsCore\Actions\IsLaraDumpsInPipe;
 use LaraDumps\LaraDumpsCore\LaraDumps;
 
 if (!function_exists('appBasePath')) {
@@ -29,8 +30,10 @@ if (!function_exists('appBasePath')) {
 }
 
 if (!function_exists('ds')) {
-    function ds(mixed ...$args): LaraDumps|LaravelLaraDumps
+    function ds(mixed ...$args): mixed
     {
+        $isInsidePipe = IsLaraDumpsInPipe::handle();
+
         $sendRequest = function ($args, LaraDumps $instance) {
             if ($args) {
                 foreach ($args as $arg) {
@@ -44,20 +47,21 @@ if (!function_exists('ds')) {
 
             $sendRequest($args, $instance);
 
-            return $instance;
+            return $isInsidePipe && isset($args[0]) ? $args[0] : $instance;
         }
 
         $instance = new LaraDumps();
 
         $sendRequest($args, $instance);
 
-        return $instance;
+        return $isInsidePipe && isset($args[0]) ? $args[0] : $instance;
     }
 }
 
 if (!function_exists('phpinfo')) {
     function phpinfo(): LaraDumps
     {
+        // @phpstan-ignore method.nonObject
         return ds()->phpinfo();
     }
 }
